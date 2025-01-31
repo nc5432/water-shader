@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvgligyy2psi8"]
+
+[ext_resource type="Material" uid="uid://b1f46mvfaphsh" path="res://Materials/Water.tres" id="1_p35v0"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gqyhx"]
+size = Vector2(5, 5)
+subdivide_width = 50
+subdivide_depth = 50
+
+[node name="WaterPlane" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_gqyhx")
+surface_material_override/0 = ExtResource("1_p35v0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.765573, 0.643349, 0, -0.643349, 0.765573, 0, 0.851548, 0)
