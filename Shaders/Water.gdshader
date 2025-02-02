@@ -24,10 +24,10 @@ float calcHeight(float x, float y){
 
 void vertex() {
 	yOffset = VERTEX.y;
-	vec3 b = vec3(VERTEX.x, VERTEX.y + calcHeight(VERTEX.x + 0.01, VERTEX.z), VERTEX.z);
-	vec3 c = vec3(VERTEX.x, VERTEX.y + calcHeight(VERTEX.x, VERTEX.z + 0.01), VERTEX.z);
+	vec3 b = vec3(VERTEX.x + 0.001, VERTEX.y + calcHeight(VERTEX.x + 0.001, VERTEX.z), VERTEX.z);
+	vec3 c = vec3(VERTEX.x, VERTEX.y + calcHeight(VERTEX.x, VERTEX.z + 0.001), VERTEX.z + 0.001);
 	VERTEX.y += calcHeight(VERTEX.x, VERTEX.z);
-	NORMAL = normalize(cross(b - VERTEX, c - VERTEX));
+	NORMAL = normalize(cross(c - VERTEX, b - VERTEX));
 	yOffset += VERTEX.y;
 }
 

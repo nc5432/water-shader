@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://cvgligyy2psi8"]
+[gd_scene load_steps=12 format=3 uid="uid://cvgligyy2psi8"]
 
 [ext_resource type="Material" uid="uid://b1f46mvfaphsh" path="res://Materials/Water.tres" id="1_p35v0"]
 [ext_resource type="Shader" path="res://Shaders/Water2.gdshader" id="2_07p2y"]
-[ext_resource type="Texture2D" uid="uid://251fcnsgqb0y" path="res://noise.png" id="3_rslsq"]
+[ext_resource type="Texture2D" uid="uid://v6apgwie2maw" path="res://autumn_field_puresky_4k.exr" id="3_vl8or"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_gqyhx"]
 lightmap_size_hint = Vector2i(52, 52)
@@ -23,35 +23,64 @@ noise = SubResource("FastNoiseLite_qwrmt")
 render_priority = 0
 shader = ExtResource("2_07p2y")
 shader_parameter/color = Vector3(0.1, 0.4, 0.8)
-shader_parameter/foamHeight = 6.035
-shader_parameter/amplitude = 0.2
+shader_parameter/foamHeight = 0.27
+shader_parameter/speed = 1.5
+shader_parameter/amplitude = 0.05
 shader_parameter/frequency = 1.0
-shader_parameter/waveCount = 32
-shader_parameter/amplitudeScaleFactor = 0.82
-shader_parameter/frequencyScaleFactor = 1.3
+shader_parameter/waveCount = 20
+shader_parameter/amplitudeScaleFactor = 0.775
+shader_parameter/frequencyScaleFactor = 1.15
+shader_parameter/dirs = PackedFloat32Array(0.981, -0.588, 0.035, -0.977, -0.809, -0.351, 0.989, -0.24, -0.192, 0.907, -0.479, 0.499, 0.388, -0.97, 0.882, -0.845, 0.246, -0.068, -0.41, -0.202, -0.914, 0.605, -0.618, 0.898, -0.615, -0.508, -0.223, -0.841, 0.396, -0.609, 0.746, 0.129, 0.724, 0.54, -0.936, 0.589, 0.874, -0.715, -0.353, 0.243)
 shader_parameter/foamTex = SubResource("NoiseTexture2D_lju3n")
-shader_parameter/dirs = ExtResource("3_rslsq")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_w7hsm"]
 material = SubResource("ShaderMaterial_0tjqc")
-size = Vector2(15, 15)
-subdivide_width = 200
-subdivide_depth = 200
+size = Vector2(50, 50)
+subdivide_width = 1000
+subdivide_depth = 1000
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_xulfv"]
+panorama = ExtResource("3_vl8or")
+
+[sub_resource type="Sky" id="Sky_l588k"]
+sky_material = SubResource("PanoramaSkyMaterial_xulfv")
+
+[sub_resource type="Environment" id="Environment_8bg6o"]
+background_mode = 2
+sky = SubResource("Sky_l588k")
+ambient_light_source = 3
+reflected_light_source = 2
+ssr_enabled = true
+ssao_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.302729, 0.545879, 0.912975, 1)
+fog_density = 1.0
+volumetric_fog_emission = Color(0.427666, 0.607438, 0.994933, 1)
 
 [node name="WaterPlane" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("PlaneMesh_gqyhx")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 0)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.400336, 0, 11.821)
+cast_shadow = 0
 mesh = SubResource("PlaneMesh_w7hsm")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.765573, 0.643349, 0, -0.643349, 0.765573, 0, 3.56427, 0)
+transform = Transform3D(1, 0, 0, 0, 0.976533, 0.215366, 0, -0.215366, 0.976533, 0, 7.41218, 0)
+visible = false
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.734879, 0)
+visible = false
 light_energy = 16.0
 omni_range = 457.052
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8bg6o")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.718151, 0, 0.695888, 0, 1, 0, -0.695888, 0, -0.718151, 20.1979, 4.08685, -9.30518)
+fov = 70.0
