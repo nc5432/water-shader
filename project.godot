@@ -20,7 +20,7 @@ project/assembly_name="water shader"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-xr-tools/addons/godot-xr-tools/plugin.cfg")
+enabled=PackedStringArray()
 
 [physics]
 
