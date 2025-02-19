@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfjspoi4g1tmx"]
+
+[ext_resource type="Script" path="res://Scripts/Boid.gd" id="1_68eu8"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_1rqgl"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qamgl"]
+height = 0.822843
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xf05q"]
+size = Vector3(0.212891, 0.198242, 0.392822)
+
+[node name="Boid" type="StaticBody3D"]
+script = ExtResource("1_68eu8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, -8.74228e-09, -0.2, 0, 0.2, -8.74228e-09, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_1rqgl")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.222042)
+shape = SubResource("CylinderShape3D_qamgl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_xf05q")
