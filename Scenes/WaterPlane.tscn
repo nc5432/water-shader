@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cvgligyy2psi8"]
+[gd_scene load_steps=20 format=3 uid="uid://cvgligyy2psi8"]
 
 [ext_resource type="Material" uid="uid://b1f46mvfaphsh" path="res://Materials/Water.tres" id="1_p35v0"]
 [ext_resource type="Material" uid="uid://doo0lbnv6560s" path="res://Materials/Water2.tres" id="2_qhg81"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://Scripts/BuoyantBody.gd" id="4_f67eq"]
 [ext_resource type="Shader" path="res://Shaders/TimeTest.gdshader" id="5_25la2"]
 [ext_resource type="Script" path="res://Scripts/BadWaterShader.gd" id="5_ltuhf"]
+[ext_resource type="PackedScene" uid="uid://dha8duxq01cn4" path="res://Models/boat_0.glb" id="7_gtoyb"]
+[ext_resource type="Script" path="res://Scripts/WaveManager.gd" id="8_jes3c"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_gqyhx"]
 lightmap_size_hint = Vector2i(52, 52)
@@ -56,6 +58,9 @@ subdivide_depth = 20
 transparency = 1
 albedo_color = Color(0, 0.372549, 1, 0.6)
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_wkpnq"]
+points = PackedVector3Array(-0.669005, -0.162939, -0.133625, -0.498217, -1.05109, -0.207684, -0.418063, -0.924207, 0.112045, -0.480143, -0.14392, 0.172168, -0.449365, 0.636117, 0.122917, -0.609805, 0.724956, -0.204108, 0, -1.11465, -0.229865, 0, 1.44193, -0.267368, 0, -0.947981, 0.0959932, -0.143152, -0.759541, 0.326779, -0.269409, -0.0640898, 0.373622, -0.219902, 0.631612, 0.329479, 0, 0.875608, 0.420392, 0, 1.24648, 0.0675372, 0.498086, -1.05109, -0.207684, 0.417932, -0.924207, 0.112045, 0.609674, 0.724956, -0.204108, 0.143021, -0.759541, 0.326779, 0, -0.644926, 0.381283, 0, 0.115842, 0.478034, 0.269278, -0.0640898, 0.373622, 0.219771, 0.631612, 0.329479, 0.449234, 0.636117, 0.122917, 0.669005, -0.162939, -0.133625, 0.480012, -0.14392, 0.172168)
+
 [node name="WaterPlane" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -74,48 +79,41 @@ environment = SubResource("Environment_8bg6o")
 transform = Transform3D(-0.718151, 0, 0.695888, 0, 1, 0, -0.695888, 0, -0.718151, 20.1979, 4.08685, -9.30518)
 fov = 70.0
 
-[node name="RigidBody3D" type="RigidBody3D" parent="." node_paths=PackedStringArray("samplePoints")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0169, 1.67, -1.69189)
+[node name="Cube" type="RigidBody3D" parent="." node_paths=PackedStringArray("samplePoints")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0169, 0.583377, -1.69189)
 linear_damp = 1.5
 angular_damp = 5.0
 script = ExtResource("4_f67eq")
-buoyancy = 3.0
 samplePoints = [NodePath("Node3D"), NodePath("Node3D2"), NodePath("Node3D3"), NodePath("Node3D4"), NodePath("Node3D5"), NodePath("Node3D6"), NodePath("Node3D7"), NodePath("Node3D8")]
-amplitude = 0.085
-speed = 1.355
-waveCount = 4
-amplitudeScaleFactor = 0.835
-frequencyScaleFactor = 1.145
-dirs = Array[Vector2]([Vector2(0.981, -0.588), Vector2(0.035, -0.977), Vector2(-0.809, -0.351), Vector2(0.989, -0.24)])
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Cube"]
 mesh = SubResource("BoxMesh_ffhgb")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube"]
 shape = SubResource("BoxShape3D_bt6if")
 
-[node name="Node3D" type="Node3D" parent="RigidBody3D"]
+[node name="Node3D" type="Node3D" parent="Cube"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.5, 0.5)
 
-[node name="Node3D2" type="Node3D" parent="RigidBody3D"]
+[node name="Node3D2" type="Node3D" parent="Cube"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.5, 0.5)
 
-[node name="Node3D3" type="Node3D" parent="RigidBody3D"]
+[node name="Node3D3" type="Node3D" parent="Cube"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.5, 0.5)
 
-[node name="Node3D4" type="Node3D" parent="RigidBody3D"]
+[node name="Node3D4" type="Node3D" parent="Cube"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
 
-[node name="Node3D5" type="Node3D" parent="RigidBody3D"]
+[node name="Node3D5" type="Node3D" parent="Cube"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, -0.5)
 
-[node name="Node3D6" type="Node3D" parent="RigidBody3D"]
+[node name="Node3D6" type="Node3D" parent="Cube"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.5, -0.5)
 
-[node name="Node3D7" type="Node3D" parent="RigidBody3D"]
+[node name="Node3D7" type="Node3D" parent="Cube"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -0.5, -0.5)
 
-[node name="Node3D8" type="Node3D" parent="RigidBody3D"]
+[node name="Node3D8" type="Node3D" parent="Cube"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.5, -0.5)
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
@@ -129,3 +127,54 @@ waveCount = 1
 amplitudeScaleFactor = 0.85
 frequencyScaleFactor = 1.145
 dirs = Array[Vector2]([Vector2(0.981, -0.588)])
+
+[node name="Boat" type="RigidBody3D" parent="." node_paths=PackedStringArray("samplePoints")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5064, 0.747465, 0.384609)
+linear_damp = 1.5
+angular_damp = 5.0
+script = ExtResource("4_f67eq")
+buoyancy = 1.5
+samplePoints = [NodePath("Node3D"), NodePath("Node3D2"), NodePath("Node3D3"), NodePath("Node3D4"), NodePath("Node3D5"), NodePath("Node3D6"), NodePath("Node3D9"), NodePath("Node3D7"), NodePath("Node3D8")]
+
+[node name="boat_0" parent="Boat" instance=ExtResource("7_gtoyb")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boat"]
+transform = Transform3D(2, 0, 0, 0, -8.74228e-08, -2, 0, 2, -8.74228e-08, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_wkpnq")
+
+[node name="Node3D" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0.2)
+
+[node name="Node3D2" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.814, 1.7)
+
+[node name="Node3D3" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.736, -1.3)
+
+[node name="Node3D4" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.236, -1.8)
+
+[node name="Node3D5" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.236, 2.3)
+
+[node name="Node3D6" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, -0.236, 1.2)
+
+[node name="Node3D9" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, -0.236, -1.6)
+
+[node name="Node3D7" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, -0.236, 1.2)
+
+[node name="Node3D8" type="Node3D" parent="Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, -0.236, -1.2)
+
+[node name="WaveManager" type="Node" parent="."]
+script = ExtResource("8_jes3c")
+amplitude = 0.085
+speed = 1.355
+waveCount = 4
+amplitudeScaleFactor = 0.835
+frequencyScaleFactor = 1.145
+dirs = Array[Vector2]([Vector2(0.981, -0.588), Vector2(0.035, -0.977), Vector2(-0.809, -0.351), Vector2(0.989, -0.24)])

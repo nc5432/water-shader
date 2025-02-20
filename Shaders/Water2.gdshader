@@ -12,6 +12,8 @@ uniform float amplitudeScaleFactor = 0.82;
 uniform float frequencyScaleFactor = 1.18;
 uniform float dirs[40];
 
+uniform sampler2D depth: hint_depth_texture;
+
 varying float yOffset;
 
 float calcHeight(float x, float y){
@@ -41,6 +43,8 @@ void fragment() {
 	float strength = yOffset * texture(foamTex, UV).r;
 	if (strength >= foamHeight) ALBEDO = ALBEDO + vec3(1, 1, 1) * (strength + foamHeight);
 	ALPHA = 0.9;
+	float dep = texture(depth, SCREEN_UV).x;
+	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, dep);
 }
 
 //void light() {
