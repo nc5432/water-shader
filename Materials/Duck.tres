@@ -1,0 +1,14 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3 uid="uid://b3k6xd4nrg5cf"]
+
+[ext_resource type="Texture2D" uid="uid://mibg6x0op1p1" path="res://Textures/Duck/T_rubber_duck_BaseColor.tga" id="1_gx1n1"]
+[ext_resource type="Texture2D" uid="uid://bxdf8iw1rifrp" path="res://Textures/Duck/T_rubber_duck_Metallic.tga" id="2_mgc3k"]
+[ext_resource type="Texture2D" uid="uid://5jmrtina2thj" path="res://Textures/Duck/T_rubber_duck_Normal.tga" id="3_rvgbx"]
+[ext_resource type="Texture2D" uid="uid://4yjvmnfc4iv" path="res://Textures/Duck/T_rubber_duck_Roughness.tga" id="4_ixktq"]
+
+[resource]
+albedo_texture = ExtResource("1_gx1n1")
+metallic = 1.0
+metallic_texture = ExtResource("2_mgc3k")
+roughness_texture = ExtResource("4_ixktq")
+normal_enabled = true
+normal_texture = ExtResource("3_rvgbx")

@@ -54,7 +54,7 @@ void fragment() {
 	vec4 object_view = INV_PROJECTION_MATRIX * vec4(object_ndc, 1.0);
 	object_view.xyz /= object_view.w;
 	float linear_object_depth = -object_view.z;
-	if (linear_depth - linear_object_depth < 1.0){
+	if (linear_depth - linear_object_depth <= 0.7){
 		discard;
 		//ALPHA = 0.9 * clamp(linear_depth - linear_object_depth - 0.7, 0.0, 1.0);
 	}

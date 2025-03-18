@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bsvq2dl1vuwlu"]
 
-[ext_resource type="Script" path="res://Scripts/BoidsController.gd" id="1_duomv"]
+[ext_resource type="Script" uid="uid://bgra8n0l1r800" path="res://Scripts/BoidsController.gd" id="1_duomv"]
 
 [node name="BoidsController" type="Node3D"]
 script = ExtResource("1_duomv")

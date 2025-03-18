@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="water shader"
-config/features=PackedStringArray("4.3", "Forward Plus")
+run/main_scene="uid://cvgligyy2psi8"
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [debug]
@@ -29,4 +30,4 @@ enabled=PackedStringArray()
 
 [physics]
 
-3d/physics_engine="JoltPhysics3D"
+3d/physics_engine="Jolt Physics"

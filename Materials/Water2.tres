@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://doo0lbnv6560s"]
 
-[ext_resource type="Shader" path="res://Shaders/Water2.gdshader" id="1_qkwc8"]
+[ext_resource type="Shader" uid="uid://cs1j12437apag" path="res://Shaders/Water2.gdshader" id="1_qkwc8"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_qwrmt"]
 frequency = 0.0126
@@ -16,10 +16,10 @@ shader = ExtResource("1_qkwc8")
 shader_parameter/color = Vector3(0.05, 0.2, 0.4)
 shader_parameter/foamHeight = 0.58
 shader_parameter/speed = 1.355
+shader_parameter/foamTex = SubResource("NoiseTexture2D_lju3n")
 shader_parameter/amplitude = 0.085
 shader_parameter/frequency = 1.0
 shader_parameter/waveCount = 20
 shader_parameter/amplitudeScaleFactor = 0.835
 shader_parameter/frequencyScaleFactor = 1.145
 shader_parameter/dirs = PackedFloat32Array(0.981, -0.588, 0.035, -0.977, -0.809, -0.351, 0.989, -0.24, -0.192, 0.907, -0.479, 0.499, 0.388, -0.97, 0.882, -0.845, 0.246, -0.068, -0.41, -0.202, -0.914, 0.605, -0.618, 0.898, -0.615, -0.508, -0.223, -0.841, 0.396, -0.609, 0.746, 0.129, 0.724, 0.54, -0.936, 0.589, 0.874, -0.715, -0.353, 0.243)
-shader_parameter/foamTex = SubResource("NoiseTexture2D_lju3n")
