@@ -1,0 +1,56 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://bv06fr71bp0mr"]
+
+[sub_resource type="Shader" id="Shader_n7650"]
+code = "shader_type canvas_item;
+render_mode world_vertex_coords;
+
+uniform float foamHeight = 0.2;
+uniform float speed = 1.0;
+uniform sampler2D foamTex;
+uniform float amplitude = 0.2;
+uniform float frequency = 1.0;
+uniform int waveCount = 5;
+uniform float amplitudeScaleFactor = 0.82;
+uniform float frequencyScaleFactor = 1.18;
+uniform float dirs[40];
+uniform sampler2D tex;
+
+varying float yOffset;
+
+float calcHeight(float x, float y){
+	float amp = 1.0;
+	float freq = 1.0;
+	float offset = 0.0;
+	for (int i = 0; i < waveCount; i++){
+		offset += amplitude * amp * pow(E, sin(frequency * freq * (speed * TIME + (dirs[2 * i] * x) + (dirs[2 * i + 1] * y))));
+		amp *= amplitudeScaleFactor;
+		freq *= frequencyScaleFactor;
+	}
+	return offset;
+}
+
+void vertex() {
+	yOffset = VERTEX.y;
+	VERTEX.y += calcHeight(VERTEX.x, VERTEX.y);
+	yOffset += VERTEX.y;
+}
+
+void fragment() {
+	COLOR = vec4(1.0, 1.0, 1.0, 0.5);
+}
+"
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_n7650"]
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource("Shader_n7650")
+shader_parameter/foamHeight = 0.2
+shader_parameter/speed = 1.0
+shader_parameter/amplitude = 0.2
+shader_parameter/frequency = 1.0
+shader_parameter/waveCount = 5
+shader_parameter/amplitudeScaleFactor = 0.82
+shader_parameter/frequencyScaleFactor = 1.18
+shader_parameter/dirs = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+shader_parameter/tex = SubResource("CanvasTexture_n7650")

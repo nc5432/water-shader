@@ -1,7 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://cvgligyy2psi8"]
+[gd_scene load_steps=21 format=3 uid="uid://bfy776lrcd0cl"]
 
-[ext_resource type="Material" uid="uid://b1f46mvfaphsh" path="res://Materials/Water.tres" id="1_p35v0"]
-[ext_resource type="Material" uid="uid://doo0lbnv6560s" path="res://Materials/Water2.tres" id="2_qhg81"]
+[ext_resource type="Material" uid="uid://dipb5q5o7g4dx" path="res://Materials/GerstnerWater.tres" id="1_20nd5"]
+[ext_resource type="PackedScene" uid="uid://b6hynk4kyhnqt" path="res://Scenes/SinFoam.tscn" id="2_y7q7p"]
 [ext_resource type="Texture2D" uid="uid://v6apgwie2maw" path="res://autumn_field_puresky_4k.exr" id="3_vl8or"]
 [ext_resource type="Script" uid="uid://ptic0lam0bio" path="res://Scripts/BuoyantBody.gd" id="4_f67eq"]
 [ext_resource type="Shader" uid="uid://20hv5g0m3ym3" path="res://Shaders/TimeTest.gdshader" id="5_25la2"]
@@ -10,15 +10,8 @@
 [ext_resource type="Script" uid="uid://0f5o547ecwde" path="res://Scripts/WaveManager.gd" id="8_jes3c"]
 [ext_resource type="PackedScene" uid="uid://lp8cghhpbii2" path="res://Models/SM_rubber_duck.FBX" id="9_t1a22"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_gqyhx"]
-lightmap_size_hint = Vector2i(52, 52)
-material = ExtResource("1_p35v0")
-size = Vector2(10, 10)
-subdivide_width = 200
-subdivide_depth = 200
-
 [sub_resource type="PlaneMesh" id="PlaneMesh_w7hsm"]
-material = ExtResource("2_qhg81")
+material = ExtResource("1_20nd5")
 size = Vector2(50, 50)
 subdivide_width = 1000
 subdivide_depth = 1000
@@ -68,19 +61,18 @@ points = PackedVector3Array(-0.0546342, -0.0177093, 0.0228165, -0.0511687, -0.01
 [node name="WaterPlane" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("PlaneMesh_gqyhx")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.400336, 0, 11.821)
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_w7hsm")
+
+[node name="FoamTex" parent="MeshInstance3D" instance=ExtResource("2_y7q7p")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_8bg6o")
 
 [node name="Cube" type="RigidBody3D" parent="." node_paths=PackedStringArray("samplePoints")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.4682, 1.58338, 8.16784)
+visible = false
 linear_damp = 1.5
 angular_damp = 5.0
 script = ExtResource("4_f67eq")
@@ -118,6 +110,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.5, -0.5)
 
 [node name="Boat" type="RigidBody3D" parent="." node_paths=PackedStringArray("samplePoints")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5064, 0.747465, 0.384609)
+visible = false
 linear_damp = 1.5
 angular_damp = 5.0
 script = ExtResource("4_f67eq")
@@ -185,6 +178,7 @@ dirs = Array[Vector2]([Vector2(0.981, -0.588), Vector2(0.035, -0.977), Vector2(-
 
 [node name="Duck" type="RigidBody3D" parent="." node_paths=PackedStringArray("samplePoints")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.97188, 1.86235, 2.06099)
+visible = false
 linear_damp = 1.5
 angular_damp = 5.0
 script = ExtResource("4_f67eq")
