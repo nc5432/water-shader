@@ -30,3 +30,10 @@ enabled=PackedStringArray()
 [physics]
 
 3d/physics_engine="Jolt Physics"
+
+[shader_globals]
+
+DELTA={
+"type": "float",
+"value": 0.0
+}

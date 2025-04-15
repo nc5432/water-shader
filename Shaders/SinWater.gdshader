@@ -11,6 +11,7 @@ uniform int waveCount = 5;
 uniform float amplitudeScaleFactor = 0.82;
 uniform float frequencyScaleFactor = 1.18;
 uniform float dirs[40];
+uniform sampler2D foam;
 
 uniform sampler2D depth: hint_depth_texture;
 
@@ -39,9 +40,12 @@ void vertex() {
 
 void fragment() {
 	ALBEDO = color * clamp(yOffset, 0.2, 11.0);
+	vec4 foamLevel = texture(foam, UV);
+	ALBEDO += vec3(foamLevel.r, foamLevel.r, foamLevel.r);
 	//SPECULAR = 1.0;
-	float strength = yOffset * texture(foamTex, UV).r;
-	if (strength >= foamHeight) ALBEDO = ALBEDO + vec3(1, 1, 1) * (strength + foamHeight);
+	//float strength = yOffset * texture(foamTex, UV).r;
+	//if (strength >= foamHeight) ALBEDO = ALBEDO + vec3(1, 1, 1) * (strength + foamHeight);
+
 	ALPHA = 0.9;
 	float dep = texture(depth, SCREEN_UV).x;
 	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, dep);

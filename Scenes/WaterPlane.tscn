@@ -1,6 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://bfy776lrcd0cl"]
+[gd_scene load_steps=23 format=3 uid="uid://bfy776lrcd0cl"]
 
-[ext_resource type="Material" uid="uid://dipb5q5o7g4dx" path="res://Materials/GerstnerWater.tres" id="1_20nd5"]
+[ext_resource type="Shader" uid="uid://cs1j12437apag" path="res://Shaders/SinWater.gdshader" id="1_y7q7p"]
 [ext_resource type="PackedScene" uid="uid://b6hynk4kyhnqt" path="res://Scenes/SinFoam.tscn" id="2_y7q7p"]
 [ext_resource type="Texture2D" uid="uid://v6apgwie2maw" path="res://autumn_field_puresky_4k.exr" id="3_vl8or"]
 [ext_resource type="Script" uid="uid://ptic0lam0bio" path="res://Scripts/BuoyantBody.gd" id="4_f67eq"]
@@ -10,8 +10,26 @@
 [ext_resource type="Script" uid="uid://0f5o547ecwde" path="res://Scripts/WaveManager.gd" id="8_jes3c"]
 [ext_resource type="PackedScene" uid="uid://lp8cghhpbii2" path="res://Models/SM_rubber_duck.FBX" id="9_t1a22"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_y7q7p"]
+viewport_path = NodePath("MeshInstance3D/FoamTex")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0u5pq"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_y7q7p")
+shader_parameter/color = Vector3(0.05, 0.2, 0.4)
+shader_parameter/foamHeight = 0.58
+shader_parameter/speed = 1.355
+shader_parameter/amplitude = 0.085
+shader_parameter/frequency = 1.0
+shader_parameter/waveCount = 20
+shader_parameter/amplitudeScaleFactor = 0.835
+shader_parameter/frequencyScaleFactor = 1.145
+shader_parameter/dirs = PackedFloat32Array(0.981, -0.588, 0.035, -0.977, -0.809, -0.351, 0.989, -0.24, -0.192, 0.907, -0.479, 0.499, 0.388, -0.97, 0.882, -0.845, 0.246, -0.068, -0.41, -0.202, -0.914, 0.605, -0.618, 0.898, -0.615, -0.508, -0.223, -0.841, 0.396, -0.609, 0.746, 0.129, 0.724, 0.54, -0.936, 0.589, 0.874, -0.715, -0.353, 0.243)
+shader_parameter/foam = SubResource("ViewportTexture_y7q7p")
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_w7hsm"]
-material = ExtResource("1_20nd5")
+material = SubResource("ShaderMaterial_0u5pq")
 size = Vector2(50, 50)
 subdivide_width = 1000
 subdivide_depth = 1000
