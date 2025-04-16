@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
-uniform float foamDecayRate = 0.2;
-uniform float foamGrowth = 0.5;
+uniform float foamDecayRate = 1.0;
+uniform float foamGrowth = 0.05;
 uniform float foamHeight = 0.2;
 uniform float speed = 1.0;
 uniform sampler2D foamTex;
@@ -11,12 +11,13 @@ uniform int waveCount = 5;
 uniform float amplitudeScaleFactor = 0.82;
 uniform float frequencyScaleFactor = 1.18;
 uniform float dirs[40];
+//uniform sampler2D tex: hint_screen_texture;
 uniform sampler2D tex;
 //global uniform float DELTA;
 
 void fragment() {
 	//float brightness = texture(tex, UV).r - (foamDecayRate * DELTA);
-	float brightness = texture(tex, UV).r * foamDecayRate;
+	float brightness = clamp(texture(tex, UV).r - foamDecayRate, 0.0, 1.0);
 	float amp = 1.0;
 	float freq = 1.0;
 	float offset = 0.0;
@@ -30,4 +31,5 @@ void fragment() {
 	//if (offset >= foamHeight * 1.8) brightness += foamGrowth * DELTA;
 	if (offset >= foamHeight * 1.8) brightness += foamGrowth;
 	COLOR = vec4(brightness, brightness, brightness, 1.0);
+	COLOR = texture(tex, UV);
 }

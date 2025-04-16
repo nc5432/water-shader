@@ -1,11 +1,16 @@
 extends SubViewport
 
-@onready var textureRect: TextureRect = $TextureRect
-@onready var shader: ShaderMaterial
+@export var shaderObject: ColorRect
+@export var shader: ShaderMaterial
+
+@export var tex: Texture2D
 
 func _ready() -> void:
-	shader = $ColorRect.material
+	var result: Error = ResourceSaver.save(ImageTexture.create_from_image(tex.get_image()), "iconImage")
+	print(result)
 
 func _process(delta: float) -> void:
-	textureRect.texture = get_texture()
-	shader.set_shader_parameter("tex", textureRect.texture)
+	await RenderingServer.frame_post_draw
+	var img: Image = get_texture().get_image()
+	tex = ImageTexture.create_from_image(img)
+	shader.set_shader_parameter("tex", tex)
