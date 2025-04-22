@@ -1,7 +1,7 @@
-[gd_scene load_steps=25 format=3 uid="uid://bfy776lrcd0cl"]
+[gd_scene load_steps=23 format=3 uid="uid://bfy776lrcd0cl"]
 
+[ext_resource type="Material" uid="uid://doo0lbnv6560s" path="res://Materials/SinWater.tres" id="1_20nd5"]
 [ext_resource type="Material" uid="uid://dipb5q5o7g4dx" path="res://Materials/GerstnerWater.tres" id="1_y7q7p"]
-[ext_resource type="PackedScene" uid="uid://b6hynk4kyhnqt" path="res://Scenes/SinFoam.tscn" id="2_y7q7p"]
 [ext_resource type="Texture2D" uid="uid://v6apgwie2maw" path="res://autumn_field_puresky_4k.exr" id="3_vl8or"]
 [ext_resource type="Script" uid="uid://ptic0lam0bio" path="res://Scripts/BuoyantBody.gd" id="4_f67eq"]
 [ext_resource type="Shader" uid="uid://20hv5g0m3ym3" path="res://Shaders/TimeTest.gdshader" id="5_25la2"]
@@ -9,67 +9,19 @@
 [ext_resource type="PackedScene" uid="uid://dha8duxq01cn4" path="res://Models/boat_0.glb" id="7_gtoyb"]
 [ext_resource type="Script" uid="uid://0f5o547ecwde" path="res://Scripts/WaveManager.gd" id="8_jes3c"]
 [ext_resource type="PackedScene" uid="uid://lp8cghhpbii2" path="res://Models/SM_rubber_duck.FBX" id="9_t1a22"]
+[ext_resource type="Script" uid="uid://itd5mq4iclkk" path="res://Scripts/ShaderController.gd" id="10_ksybo"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_w7hsm"]
-material = ExtResource("1_y7q7p")
+material = ExtResource("1_20nd5")
 size = Vector2(50, 50)
 subdivide_width = 1000
 subdivide_depth = 1000
 
-[sub_resource type="Shader" id="Shader_n7650"]
-code = "shader_type canvas_item;
-render_mode world_vertex_coords;
-
-uniform float foamHeight = 0.2;
-uniform float speed = 1.0;
-uniform sampler2D foamTex;
-uniform float amplitude = 0.2;
-uniform float frequency = 1.0;
-uniform int waveCount = 5;
-uniform float amplitudeScaleFactor = 0.82;
-uniform float frequencyScaleFactor = 1.18;
-uniform float dirs[40];
-uniform sampler2D tex;
-
-varying float yOffset;
-
-float calcHeight(float x, float y){
-	float amp = 1.0;
-	float freq = 1.0;
-	float offset = 0.0;
-	for (int i = 0; i < waveCount; i++){
-		offset += amplitude * amp * pow(E, sin(frequency * freq * (speed * TIME + (dirs[2 * i] * x) + (dirs[2 * i + 1] * y))));
-		amp *= amplitudeScaleFactor;
-		freq *= frequencyScaleFactor;
-	}
-	return offset;
-}
-
-void vertex() {
-	yOffset = VERTEX.y;
-	VERTEX.y += calcHeight(VERTEX.x, VERTEX.y);
-	yOffset += VERTEX.y;
-}
-
-void fragment() {
-	COLOR = vec4(1.0, 1.0, 1.0, 0.5);
-}
-"
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_n7650"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_y7q7p"]
-resource_local_to_scene = true
-shader = SubResource("Shader_n7650")
-shader_parameter/foamHeight = 0.2
-shader_parameter/speed = 1.0
-shader_parameter/amplitude = 0.2
-shader_parameter/frequency = 1.0
-shader_parameter/waveCount = 5
-shader_parameter/amplitudeScaleFactor = 0.82
-shader_parameter/frequencyScaleFactor = 1.18
-shader_parameter/dirs = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-shader_parameter/tex = SubResource("CanvasTexture_n7650")
+[sub_resource type="PlaneMesh" id="PlaneMesh_y7q7p"]
+material = ExtResource("1_y7q7p")
+size = Vector2(50, 50)
+subdivide_width = 1000
+subdivide_depth = 1000
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_xulfv"]
 panorama = ExtResource("3_vl8or")
@@ -113,21 +65,25 @@ albedo_color = Color(0, 0.372549, 1, 0.6)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_2faid"]
 points = PackedVector3Array(-0.0546342, -0.0177093, 0.0228165, -0.0511687, -0.0174272, 0.0110199, -0.0527517, -0.0328059, 0.0220571, -0.0514575, -0.0319895, 0.0340996, -0.0525164, -0.0171749, 0.0348055, -0.0541315, -0.00212274, 0.0241212, -0.0511794, -0.00135083, 0.0124638, -0.0410398, -0.0170413, 0.00324472, -0.0486124, -0.0324645, 0.0100895, -0.0417029, -0.00169225, 0.00411101, -0.0474894, -0.046908, 0.0216828, -0.0463663, -0.0461807, 0.0330622, -0.0317131, -0.0252799, 0.085061, -0.0298948, -0.0364131, 0.0853498, -0.0508265, -0.00305793, 0.0358857, -0.0289749, -0.0251463, 0.0916384, -0.0512757, 0.0125286, 0.0267629, -0.0487301, 0.0146662, 0.0149557, -0.040259, 0.0141318, 0.00556552, -0.0284081, -0.00286495, 0.000464039, -0.0276594, -0.0171897, 0.00029292, -0.0378097, -0.0318262, 0.00262442, -0.0340875, -0.0456908, 0.00366183, -0.0437886, -0.0456166, 0.0106991, -0.0275096, 0.01192, 0.000934616, -0.0356598, -0.056824, 0.0119611, -0.037692, -0.0594663, 0.0216507, -0.0370075, -0.0590358, 0.0319499, -0.0242688, -0.046819, 0.084954, -0.0272208, -0.036042, 0.0915314, -0.0398953, 0.0411336, 0.0424417, -0.0438956, 0.0336818, 0.0364418, -0.0219264, -0.0271799, 0.100365, -0.0220761, -0.0209008, 0.099681, -0.0278947, -0.0150967, 0.0896919, -0.047115, 0.025265, 0.0315435, -0.0421949, 0.038714, 0.0246346, -0.0451363, 0.0291691, 0.0195866, -0.0372749, 0.0298074, 0.00889165, -0.0252314, 0.0271948, 0.0024426, -0.0138618, -0.00369623, 4.15624e-06, -0.0131879, 0.0107621, 0.000346394, -0.0247073, -0.031752, 0.00018597, -0.0222152, -0.0477838, 0.00105226, -0.0237982, -0.0588577, 0.00546927, -0.0335207, -0.0539294, 0.00721254, -0.0118937, 0.0265119, 0.00166187, -0.0256913, -0.0637118, 0.0111055, -0.0272208, -0.0675416, 0.0211908, -0.026686, -0.0672596, 0.0315756, -0.00637471, -0.0669182, 0.0862909, -0.0103749, -0.0636969, 0.0837669, -0.0216055, -0.0457947, 0.0911357, -0.0210066, -0.0346318, 0.0995847, -0.0199477, -0.0434048, 0.0956169, -0.0326436, 0.0496839, 0.0514254, -0.032911, 0.0566014, 0.0422492, -0.0388044, 0.0471455, 0.0312655, -0.012589, -0.0342755, 0.10551, -0.0129205, -0.0268682, 0.106429, -0.0131345, -0.0193124, 0.105542, -0.0217125, -0.014592, 0.0975848, -0.024333, 0.0569279, 0.0606445, -0.0323548, 0.0503222, 0.020378, -0.0347293, 0.0406586, 0.0133942, -0.0234987, 0.0389218, 0.00531954, -0.0112734, 0.0395453, 0.00421796, -7.45058e-09, -0.00390405, -6.5387e-06, -0.0133805, -0.0176944, -2.79286e-05, 0.0131772, 0.0107621, 0.000346394, -0.0115515, -0.03242, -2.79286e-05, -1.07028e-05, -0.0504855, 0.000464039, -0.0107814, -0.0500996, 0.000731412, -0.0120221, -0.0627469, 0.00505217, -0.0131558, -0.068551, 0.0106884, -7.45058e-09, 0.0270909, 0.00174743, 0.011883, 0.0265119, 0.00166187, -0.0141612, -0.0733161, 0.02087, -0.0140115, -0.0728262, 0.031458, -0.00222473, -0.0694714, 0.0837669, -0.0058827, -0.0680315, 0.0823124, -0.00283439, -0.0683135, 0.087585, -0.0109204, -0.0518215, 0.0982692, -0.0122574, -0.0512426, 0.0976062, -0.012129, -0.0493425, 0.0992639, -0.0123857, -0.0412078, 0.10275, -0.0248357, 0.0634298, 0.0547729, -0.0284081, 0.0612476, 0.0331692, -0.0220334, 0.0687589, 0.0486233, -0.0109739, -0.0498472, 0.0998414, -0.00621427, -0.0349584, 0.107424, -0.00635331, -0.0267494, 0.108526, -0.00649236, -0.0183921, 0.107563, -0.0132093, -0.0118606, 0.102494, -0.0079256, 0.0704066, 0.06904, -0.0170277, 0.0673487, 0.0638315, -0.0225575, 0.0507527, 0.0123889, -0.0204932, 0.0634298, 0.0263886, -0.011391, 0.051673, 0.0104638, -7.45058e-09, 0.0528309, 0.0106028, -7.45058e-09, 0.0405547, 0.00442117, 0.0112627, 0.0395453, 0.00421796, 0.0138511, -0.00369623, 4.15624e-06, 0.0133697, -0.0176944, -2.79286e-05, 0.0274989, 0.01192, 0.000934616, 0.0283973, -0.00286495, 0.000464039, -7.45058e-09, -0.033177, -2.79286e-05, 0.0107707, -0.0500996, 0.000731412, -1.07028e-05, -0.0645282, 0.00480618, 0.0115408, -0.03242, -2.79286e-05, 0.0246966, -0.031752, 0.00018597, -1.07028e-05, -0.0706589, 0.0104852, -1.07028e-05, -0.0758247, 0.0208486, 0.0252207, 0.0271948, 0.0024426, -1.07028e-05, -0.0754685, 0.0314366, -1.07028e-05, -0.0697386, 0.0839166, -1.07028e-05, -0.068744, 0.0878524, -0.0143217, 0.0722621, 0.0597033, -0.0158619, 0.0718019, 0.043308, -0.01199, 0.0741177, 0.0536286, -0.00958345, -0.0498324, 0.0999697, -1.07028e-05, -0.0431524, 0.10474, -0.00625705, -0.0426625, 0.104205, -7.45058e-09, -0.0352107, 0.108044, -7.45058e-09, -0.0267198, 0.109232, -7.45058e-09, -0.0181101, 0.108226, -7.45058e-09, -0.0100199, 0.104889, -0.0066421, -0.0104949, 0.10428, -7.45058e-09, 0.0714457, 0.0704838, -0.00649236, 0.0747856, 0.0636925, -0.010514, 0.064172, 0.0235651, -0.00829995, 0.0722473, 0.0400246, -7.45058e-09, 0.0648993, 0.0231801, 0.0113803, 0.051673, 0.0104638, 0.023488, 0.0389218, 0.00531954, 0.0276486, -0.0171897, 0.00029292, 0.0402483, 0.0141318, 0.00556552, 0.0416922, -0.00169225, 0.00411101, 0.0410291, -0.0170413, 0.00324472, 0.0222045, -0.0477838, 0.00105226, 0.0120114, -0.0627469, 0.00505217, 0.037799, -0.0318262, 0.00262442, 0.0131451, -0.068551, 0.0106884, 0.0141505, -0.0733161, 0.02087, 0.0372642, 0.0298074, 0.00889165, 0.0140008, -0.0728262, 0.031458, 0.00221403, -0.0694714, 0.0837669, 0.00282368, -0.0683135, 0.087585, 0.0109632, -0.0498472, 0.0998414, 0.00957273, -0.0498324, 0.0999697, -0.0058827, 0.0754091, 0.0541312, 0.00624634, -0.0426625, 0.104205, 0.00620356, -0.0349584, 0.107424, 0.0063426, -0.0267494, 0.108526, 0.00648165, -0.0183921, 0.107563, 0.00663139, -0.0104949, 0.10428, 0.00791489, 0.0704066, 0.06904, 0.00648165, 0.0747856, 0.0636925, -7.45058e-09, 0.0754091, 0.0650401, -7.45058e-09, 0.0725293, 0.0388589, -7.45058e-09, 0.0758099, 0.0532329, 0.0105033, 0.064172, 0.0235651, 0.0225467, 0.0507527, 0.0123889, 0.0347186, 0.0406586, 0.0133942, 0.0487194, 0.0146662, 0.0149557, 0.0511687, -0.00135083, 0.0124638, 0.051158, -0.0174272, 0.0110199, 0.0486017, -0.0324645, 0.0100895, 0.0340768, -0.0456908, 0.00366183, 0.0237875, -0.0588577, 0.00546927, 0.0256806, -0.0637118, 0.0111055, 0.0272101, -0.0675416, 0.0211908, 0.0266753, -0.0672596, 0.0315756, 0.0451256, 0.0291691, 0.0195866, 0.00587199, -0.0680315, 0.0823124, 0.006364, -0.0669182, 0.0862909, 0.0109097, -0.0518215, 0.0982692, 0.0122467, -0.0512426, 0.0976062, 0.0121183, -0.0493425, 0.0992639, 0.012375, -0.0412078, 0.10275, 0.0125783, -0.0342755, 0.10551, 0.0131237, -0.0193124, 0.105542, 0.0129098, -0.0268682, 0.106429, 0.0131986, -0.0118606, 0.102494, 0.017017, 0.0673487, 0.0638315, 0.014311, 0.0722621, 0.0597033, 0.0217018, -0.014592, 0.0975848, 0.0119793, 0.0741177, 0.0536286, 0.00587199, 0.0754091, 0.0541312, 0.00828924, 0.0722473, 0.0400246, 0.0204825, 0.0634298, 0.0263886, 0.0323441, 0.0503222, 0.020378, 0.0421842, 0.038714, 0.0246346, 0.051265, 0.0125286, 0.0267629, 0.0541208, -0.00212274, 0.0241212, 0.0546342, -0.0177093, 0.0228165, 0.052741, -0.0328059, 0.0220571, 0.0474787, -0.046908, 0.0216828, 0.0437779, -0.0456166, 0.0106991, 0.0335099, -0.0539294, 0.00721254, 0.0356491, -0.056824, 0.0119611, 0.0376813, -0.0594663, 0.0216507, 0.0369968, -0.0590358, 0.0319499, 0.0103642, -0.0636969, 0.0837669, 0.0242581, -0.046819, 0.084954, 0.0215948, -0.0457947, 0.0911357, 0.019937, -0.0434048, 0.0956169, 0.0209959, -0.0346318, 0.0995847, 0.0219157, -0.0271799, 0.100365, 0.0220654, -0.0209008, 0.099681, 0.0243222, 0.0569279, 0.0606445, 0.024825, 0.0634298, 0.0547729, 0.0220227, 0.0687589, 0.0486233, 0.027884, -0.0150967, 0.0896919, 0.0158512, 0.0718019, 0.043308, 0.0283973, 0.0612476, 0.0331692, 0.0387937, 0.0471455, 0.0312655, 0.0471043, 0.025265, 0.0315435, 0.0438849, 0.0336818, 0.0364418, 0.0508157, -0.00305793, 0.0358857, 0.0525057, -0.0171749, 0.0348055, 0.0514468, -0.0319895, 0.0340996, 0.0463556, -0.0461807, 0.0330622, 0.0298841, -0.0364131, 0.0853498, 0.0272101, -0.036042, 0.0915314, 0.0289642, -0.0251463, 0.0916384, 0.0326329, 0.0496839, 0.0514254, 0.0329003, 0.0566014, 0.0422492, 0.0398846, 0.0411336, 0.0424417, 0.0317024, -0.0252799, 0.085061)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ksybo"]
-viewport_path = NodePath("MeshInstance3D/FoamTex")
-
 [node name="WaterPlane" type="Node3D"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="ESin" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.400336, 0, 11.821)
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_w7hsm")
 
-[node name="FoamTex" parent="MeshInstance3D" instance=ExtResource("2_y7q7p")]
-shader = SubResource("ShaderMaterial_y7q7p")
+[node name="Gerstner" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.400336, 0, 11.821)
+visible = false
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_y7q7p")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_8bg6o")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
 
 [node name="Cube" type="RigidBody3D" parent="." node_paths=PackedStringArray("samplePoints")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.4682, 1.58338, 8.16784)
@@ -262,10 +218,307 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.308153, 0.12, -0.492)
 [node name="Node3D5" type="Node3D" parent="Duck"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.008, 0.782, 0.277)
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_ksybo")
+eSinShader = ExtResource("1_20nd5")
+gerstnerShader = ExtResource("1_y7q7p")
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 294.0
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Shader"
+fit_content = true
+
+[node name="OptionButton" type="OptionButton" parent="Control/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "E^Sin"
+popup/item_0/id = 0
+popup/item_1/text = "Gerstner"
+popup/item_1/id = 1
+
+[node name="ColorRect" type="ColorRect" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="ESin" type="VBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Color"
+fit_content = true
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.1, 0.4, 0.8, 1)
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Wave Count"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 20.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speed"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10.0
+max_value = 10.0
+step = 0.1
+value = 1.2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Amplitude"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 2.0
+step = 0.001
+value = 0.075
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Amplitude Scale"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 3.0
+step = 0.01
+value = 0.72
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Frequency"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 2.0
+step = 0.01
+value = 1.0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Frequency Scale"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 3.0
+step = 0.1
+value = 1.3
+
+[node name="Gerstner" type="VBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
-offset_right = 172.0
-offset_bottom = 142.0
-texture = SubResource("ViewportTexture_ksybo")
-expand_mode = 1
-stretch_mode = 5
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Color"
+fit_content = true
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.1, 0.4, 0.8, 1)
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Wave Count"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 20.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speed"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10.0
+max_value = 10.0
+step = 0.1
+value = 1.5
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Amplitude"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 2.0
+step = 0.001
+value = 0.075
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Amplitude Scale"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 3.0
+step = 0.01
+value = 0.72
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Frequency"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+max_value = 10.0
+step = 0.01
+value = 1.6
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Frequency Scale"
+fit_content = true
+
+[node name="HSlider" type="HSlider" parent="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 10.0
+step = 0.1
+value = 1.3
+
+[node name="Button" type="Button" parent="Control/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Reset"
+
+[connection signal="item_selected" from="Control/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/OptionButton" to="Control" method="_on_option_button_item_selected"]
+[connection signal="color_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer/ColorPickerButton" to="Control" method="_on_color_picker_button_color_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer7/HSlider" to="Control" method="_on_wave_count_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer2/HSlider" to="Control" method="_on_speed_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer3/HSlider" to="Control" method="_on_amplitude_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer4/HSlider" to="Control" method="_on_amplitude_scale_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer6/HSlider" to="Control" method="_on_frequency_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/ESin/HBoxContainer5/HSlider" to="Control" method="_on_frequency_scale_value_changed"]
+[connection signal="color_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer/ColorPickerButton" to="Control" method="_on_color_picker_button_color_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer7/HSlider" to="Control" method="_on_wave_count_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer2/HSlider" to="Control" method="_on_speed_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer3/HSlider" to="Control" method="_on_amplitude_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer4/HSlider" to="Control" method="_on_amplitude_scale_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer6/HSlider" to="Control" method="_on_frequency_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/MarginContainer/VBoxContainer/Gerstner/HBoxContainer5/HSlider" to="Control" method="_on_frequency_scale_value_changed"]
+[connection signal="pressed" from="Control/PanelContainer/MarginContainer/VBoxContainer/Button" to="Control" method="_on_button_pressed"]

@@ -2,13 +2,14 @@ shader_type spatial;
 render_mode world_vertex_coords;
 
 uniform vec3 color = vec3(0.1, 0.4, 0.8);
+uniform float opacity = 0.95;
 uniform float speed = 1.0;
 uniform float amplitude = 0.2;
 uniform float frequency = 1.0;
 uniform int waveCount = 5;
 uniform float amplitudeScaleFactor = 0.82;
 uniform float frequencyScaleFactor = 1.18;
-uniform float dirs[40];
+uniform float dirs[200];
 
 uniform sampler2D depth: hint_depth_texture;
 
@@ -47,7 +48,7 @@ void fragment() {
 	//SPECULAR = 1.0;
 	//float strength = baseHeight * texture(foamTex, UV).r;
 	//if (strength >= foamHeight) ALBEDO = ALBEDO + vec3(1, 1, 1) * (strength + foamHeight);
-	ALPHA = 0.9;
+	ALPHA = opacity;
 	float dep = texture(depth, SCREEN_UV).x;
 	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, dep);
 	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
